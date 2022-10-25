@@ -14,7 +14,7 @@ class TokenSevice {
             tokenData.refreshToken = refreshToken
             return tokenData.save()
         }
-        return await tokenModel.create({user: userId, refreshToken})
+        return  await tokenModel.create({user: userId, refreshToken})
 
     }
 }
