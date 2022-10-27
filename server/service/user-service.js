@@ -5,6 +5,8 @@ import mailService from "./mail-service.js";
 import tokenSevice from "./token-sevice.js";
 import UserDto from "../dtos/user-dto.js";
 
+import dotenv from 'dotenv'
+dotenv.config()
 
 class UserService {
     async registration(email, password) {
@@ -28,6 +30,14 @@ class UserService {
         const tokens = tokenSevice.generateTokens({...userDto})
         await tokenSevice.saveToken(userDto.id, tokens.refreshToken)
         return {...tokens, user: userDto}
+    }
+    async activate(activationLink) {
+        const User = await UserModel.findOne({activationLink})
+        if (!user) {
+            throw new Error('Неправильная ссылка активации')
+        }
+        user.isActivated = true
+        await user.save()
     }
 }
 
